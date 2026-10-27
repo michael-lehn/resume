@@ -1,0 +1,267 @@
+% resume.tex -- LaTeX conversion of Michael_Lehn_Resume_SoftwareEngineer.pages
+% Compile with: lualatex resume.tex   (or: make)
+%
+% Layout values are measured from the PDF exported by Pages, in PDF points
+% (bp, 1/72 in; TeX's pt is slightly smaller):
+%   US Letter, margins 45bp (left/right), text from 42.6bp (first baseline)
+%   to 756bp; font Arial; body 10bp with Pages' single line spacing for
+%   Arial (11.45bp).
+%
+% The public version omits the phone number. It is built from this file with
+%   lualatex -jobname=resume_public '\def\PublicVersion{}\input{resume}'
+\documentclass[10pt]{article}
+
+\usepackage[letterpaper,top=32.6bp,bottom=36bp,left=45bp,right=45bp,
+            headheight=0bp,headsep=0bp,footskip=0bp]{geometry}
+\usepackage{fontspec}
+\usepackage[HTML]{xcolor}
+\usepackage{enumitem}
+\usepackage{lua-ul}
+\usepackage{hyperref}
+
+% Pages breaks lines first-fit; TeX's paragraph optimizer would not
+\directlua{dofile(kpse.find_file("firstfit.lua", "lua"))}
+
+% Arial if installed, otherwise its metric-compatible clone Arimo.
+% No ligatures, and no TeX input mapping (keeps straight quotes as typed).
+\IfFontExistsTF{Arial}
+  {\setmainfont{Arial}[Ligatures={CommonOff,TeXOff}]}
+  {\setmainfont{Arimo}[Ligatures={CommonOff,TeXOff}]}
+
+\definecolor{name}{HTML}{17365D}     % dark blue (name)
+\definecolor{tagline}{HTML}{4F81BD}  % light blue (tagline, rule below name)
+\definecolor{heading}{HTML}{365F91}  % muted blue (section headings)
+\definecolor{rule}{HTML}{808080}     % gray section rules
+\definecolor{link}{HTML}{0563C1}     % hyperlinks
+
+\hypersetup{hidelinks, pdftitle={Michael Lehn -- Resume}, pdfauthor={Michael Lehn}}
+
+% Hyperlink in the Pages style: blue and underlined (breakable across lines).
+% The underline uses Arial's underline thickness (0.073em regular, 0.105em
+% bold), centered 0.1em below the baseline.
+\makeatletter
+\def\link@thick@m{0.073em}
+\def\link@thick@b{0.105em}
+\def\link@thick@bx{0.105em}
+\newunderlinetype\linkUnderLine[\number\dimexpr1em\relax\f@series]{%
+  \leaders\vrule
+    height \dimexpr-0.1em+0.5\dimexpr\csname link@thick@\f@series\endcsname\relax\relax
+    depth  \dimexpr 0.1em+0.5\dimexpr\csname link@thick@\f@series\endcsname\relax\relax}
+\makeatother
+\newcommand{\link}[2]{\href{#1}{\textcolor{link}{\linkUnderLine{#2}}}}
+
+% ---------------------------------------------------------------------------
+% Font sizes (Pages single line spacing for Arial is 1.145 x font size;
+% all body lines use the 10bp line pitch)
+\newcommand{\namesize}{\fontsize{22bp}{25.2bp}\selectfont}
+\newcommand{\taglinesize}{\fontsize{10.5bp}{16.8bp}\selectfont} % 16.8bp below the name
+\newcommand{\headsize}{\fontsize{10.5bp}{11.45bp}\selectfont}
+\newcommand{\bodysize}{\fontsize{10bp}{11.45bp}\selectfont}
+\newcommand{\smallsize}{\fontsize{9.5bp}{11.45bp}\selectfont}
+\newcommand{\contactsize}{\fontsize{9bp}{10.5bp}\selectfont}
+
+% Separator in the header lines
+\newcommand{\sep}{\ \ ·\ \ }
+
+% ---------------------------------------------------------------------------
+% Vertical spacing: every line uses the 11.45bp line pitch; the extra space
+% between blocks is added with \addvspace, so adjacent amounts do not stack.
+% The space above an entry depends on what precedes it (\cv@entryskip).
+\makeatletter
+\newcommand{\cv@entryskip}{4.6bp}
+
+% Section heading: bold blue caps with a 0.5bp gray rule 2.9bp below the
+% baseline
+\newcommand{\cvsection}[1]{%
+  \par\addvspace{6.85bp}%
+  {\headsize\bfseries\color{heading}%
+    \leavevmode\rlap{\color{rule}\rule[-3.15bp]{\linewidth}{0.5bp}}#1\par}%
+  \nopagebreak\addvspace{2.2bp}%
+  \gdef\cv@entryskip{4.8bp}%
+}
+
+% Entry: bold title, right-aligned small info (technologies or dates)
+\newcommand{\cventry}[2]{%
+  \par\addvspace{\cv@entryskip}%
+  {\bfseries #1}\hfill{\smallsize #2}\kern0.85bp\par % Pages' right tab stop
+  \nopagebreak
+  \gdef\cv@entryskip{4.1bp}% next entry directly follows (education)
+}
+
+% Italic line below an entry (role, dissertation, ...)
+\newcommand{\cvsubtitle}[1]{%
+  \vspace{0.7bp}%
+  {\smallsize\itshape #1\par}%
+  \nopagebreak\addvspace{0.9bp}%
+}
+
+% Skills paragraph with a bold run-in label
+\newcommand{\skill}[2]{%
+  \textbf{#1} #2\par\addvspace{2bp}%
+}
+
+% Bullet list: bullet at 5bp, text at 15bp from the margin
+\newenvironment{cvitems}
+  {\begin{itemize}[label=•, leftmargin=15bp, labelwidth=10bp, labelsep=0bp,
+                   align=left, topsep=0.55bp, partopsep=0bp, parsep=0bp,
+                   itemsep=1.5bp, beginpenalty=10000]}
+  {\end{itemize}\gdef\cv@entryskip{4.6bp}}
+\makeatother
+
+% ---------------------------------------------------------------------------
+\setlength{\parindent}{0bp}
+\setlength{\parskip}{0bp}
+\setlength{\topskip}{10bp}
+\pagestyle{empty}
+
+\begin{document}
+\bodysize
+\hyphenpenalty=10000 % Pages does not hyphenate this document
+\exhyphenpenalty=0
+\tolerance=9999      % Pages stretches interword spaces freely in justified text
+\emergencystretch=0bp
+\frenchspacing       % uniform interword spaces after punctuation, as in Pages
+\clubpenalty=10000   % no single lines of a paragraph or bullet at page breaks
+\widowpenalty=10000
+\makeatletter
+\@clubpenalty=\clubpenalty % list items reset \clubpenalty to this value
+\makeatother
+
+% ===========================================================================
+% Header
+{\namesize\addfontfeatures{LetterSpace=1.2}\bfseries\color{name}%
+  \rule{0bp}{22bp}% places the baseline 22bp below the top margin
+  \rlap{\smash{\color{tagline}\rule[-6.5bp]{\linewidth}{1bp}}}%
+  MICHAEL LEHN, Ph.D.\par}
+{\centering
+  {\taglinesize\addfontfeatures{LetterSpace=7.6}\color{tagline}%
+    \spaceskip=\dimexpr\fontdimen2\font+0.8bp\relax % tracking applies to spaces, too
+    Scientific Software Engineer\sep C/C++\sep Compilers \& LLVM\sep High-Performance Computing\par}
+  \vspace{1.9bp}
+  {\contactsize Ulm, Germany\sep Open to relocation to the United States\par}
+  {\contactsize
+    \link{mailto:michael.lehn@mac.com}{michael.lehn@mac.com}%
+    \ifdefined\PublicVersion
+      \ \ ·\ \link{https://www.linkedin.com/in/michael-l-2b4a4829b/}{LinkedIn}%
+    \else
+      \sep +1 (213) 232-7502\sep\link{https://www.linkedin.com/in/michael-l-2b4a4829b/}{LinkedIn}%
+    \fi
+    \sep\link{https://github.com/michael-lehn}{GitHub}%
+    \ ·\ \ \link{https://www.uni-ulm.de/mawi/institut-fuer-numerische-mathematik/institut/mitarbeiter/mlehn/}{Ulm University}\par}
+}
+\vspace{-0.7bp}
+
+% ===========================================================================
+\cvsection{SUMMARY}
+
+Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experience developing performance-critical C/C++ software. Expertise spans numerical algorithms and high-performance linear algebra, memory hierarchy and cache-aware algorithms, SIMD, multithreaded and distributed computing, CPU architecture, compiler construction, and low-level systems programming. Recent projects include an LLVM-based systems programming language with native C interoperability, a minimal self-hosting compiler, and custom CPU architectures implemented on FPGA.\par
+
+% ===========================================================================
+\cvsection{TECHNICAL SKILLS}
+
+\skill{Languages:}{C++ (modern, templates/compile-time techniques), C, Python, Assembly (x86-64, AArch64, custom RISC), LLVM IR, SystemVerilog, Java, Perl}
+\skill{Performance \& HPC:}{Numerical linear algebra, BLAS, LAPACK, ScaLAPACK, SIMD micro-kernels (SSE3), cache-aware/blocked algorithms, std::thread, OpenMP, MPI, CUDA, GPU and distributed-memory computing, benchmarking and profiling}
+\skill{Compilers \& Systems:}{LLVM, compiler construction, code generation, x86-64 System V ABI, C interoperability, ISA design, CPU architecture, FPGA (iCE40, ARTIQ/Sinara), bare-metal programming}
+\skill{Tools:}{Linux/Unix, macOS, Git, Qt, CMake, GNU Make, GDB, Valgrind, perf, Intel VTune, NVIDIA Nsight}
+
+% ===========================================================================
+\cvsection{SELECTED PROJECTS (OPEN SOURCE)}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulmBLAS}{ulmBLAS}} — High-Performance BLAS Library}{C++ · Assembly}
+\begin{cvitems}
+  \item Designed and implemented a BLAS library based on the layered architecture pioneered by BLIS, combining portable blocking/packing algorithms in C++ with small, replaceable architecture-specific micro-kernels.
+  \item Reached \textasciitilde97\% of Intel MKL DGEMM performance with BLIS micro-kernels; wrote custom SSE3 micro-kernels and a plug-in interface for externally optimized kernels.
+  \item Drove blocked LAPACK routines (e.g., DGETRF) at performance comparable to vendor LAPACK implementations.
+  \item Authored the \link{https://github.com/michael-lehn/gemm-tutorial}{GEMM Tutorial} on optimizing matrix multiplication from pure C to SSE micro-kernels; referenced by the \link{https://github.com/flame/how-to-optimize-gemm}{FLAME project's GEMM optimization resources}.
+  \item Used in \link{https://www.meta.com/de/en/legal/quest/third-party-notices/14/}{Meta Quest software}; listed in Meta’s official third-party software notices.
+\end{cvitems}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/abc-llvm}{ABC}} ("A Better C") — Systems Language \& LLVM Compiler}{C++ · LLVM}
+\begin{cvitems}
+  \item Designed a small systems language exposing C's machine model with simplified declaration syntax; built an LLVM-based compiler with interchangeable backends targeting LLVM IR and custom ULM assembly.
+  \item Implemented native C interoperability with x86-64 System V ABI lowering, enabling direct use of existing C libraries without wrappers; demonstrated with raylib applications.
+  \item Developed \link{https://github.com/michael-lehn/not-abc}{not-abc}, a minimal self-hosting compiler originally implemented in ABC, demonstrating the language's suitability for systems programming and compiler construction.
+\end{cvitems}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/FLENS}{FLENS}} — Flexible Library for Efficient Numerical Solutions}{C++}
+\begin{cvitems}
+  \item Built a numerical computing framework combining MATLAB-like abstractions with direct access to optimized BLAS/LAPACK kernels, achieving zero abstraction overhead as verified by benchmarks and generated assembly.
+  \item Designed a generic architecture allowing algorithms to operate unchanged on local, distributed, GPU-resident, and implicitly represented matrices.
+  \item Used compile-time C++ techniques and expression analysis to map high-level operations directly to optimized numerical kernels and detect performance-critical temporaries.
+\end{cvitems}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-on-ice}{ulm-on-iCE}} / {\mdseries\link{https://github.com/michael-lehn/ulm-generator}{ulm-generator}} — FPGA CPU \& ISA Toolchain}{SystemVerilog · C/C++ · Assembly}
+\begin{cvitems}
+  \item Designed and implemented a custom RISC CPU in SystemVerilog on an iCE40 FPGA, from digital logic and ISA design to assembly programs running on physical hardware.
+  \item Defined a declarative ISA description format and built a generator producing an assembler, virtual machine, instruction-level debugger, and documentation from a single specification.
+\end{cvitems}
+
+% ===========================================================================
+\cvsection{PROFESSIONAL EXPERIENCE}
+
+\cventry{Ulm University — Institute of Numerical Mathematics · Ulm, Germany}{2008 – present}
+\cvsubtitle{Tenured Faculty Member (Akademischer Rat auf Lebenszeit), Numerical Mathematics}
+\begin{cvitems}
+  \item Develop and maintain open-source numerical and systems software in C/C++: high-performance BLAS/LAPACK kernels (ulmBLAS), a numerical computing framework (FLENS), an LLVM-based systems language and compiler (ABC), and ISA/FPGA CPU tooling (ulm-generator / ulm-on-iCE).
+  \item Own the full engineering lifecycle for these codebases: architecture, implementation, testing, performance benchmarking and profiling, documentation, and long-term maintenance.
+  \item Design and teach courses in high-performance computing, compiler construction, systems programming, numerical mathematics, and scientific computing; the HPC curriculum progresses from memory hierarchy and cache-aware algorithms through SIMD micro-kernels and shared-memory parallelism to MPI and GPU computing.
+  \item Built a full-stack computing curriculum spanning logic gates, registers and ALUs, ISA design, assembly, systems programming, and compiler construction, supported by custom-developed software and FPGA hardware.
+\end{cvitems}
+
+\cventry{Ulm Center for Scientific Computing (UZWR), Ulm University · Ulm, Germany}{2006 – 2008}
+\cvsubtitle{Managing Director}
+\begin{cvitems}
+  \item Developed complete C++/Qt applications for industrial and research partners.
+  \item Translated industrial and interdisciplinary partners' engineering and scientific problems into mathematical models and working numerical software; developed custom solutions where no suitable off-the-shelf software existed.
+  \item Among numerous interdisciplinary projects, designed and developed a self-contained Windows application for MRI-based biomechanical analysis, implementing the complete software stack in-house—from FEM and numerical algorithms to data processing and the graphical user interface.
+  \item Scoped and evaluated incoming projects, designed computational approaches, and either implemented solutions directly or coordinated them with researchers possessing the required expertise.
+\end{cvitems}
+
+\cventry{Ulm University — Institute of Numerical Mathematics · Ulm, Germany}{2002 – 2008}
+\cvsubtitle{Research Associate}
+\begin{cvitems}
+  \item Conducted research and software development in scientific computing and numerical linear algebra, with a focus on high-performance numerical software in C++.
+  \item Designed and developed FLENS (Flexible Library for Efficient Numerical Solutions) as the core of my doctoral research on efficient, abstraction-preserving numerical software in C++.
+\end{cvitems}
+
+\cventry{University of Southern California — Modeling and Simulation Laboratory · Los Angeles, CA}{1999 – 2001}
+\cvsubtitle{Research Assistant / Teaching Assistant}
+\begin{cvitems}
+  \item Conducted research in applied mathematics and scientific computing with Prof. Chunming Wang in \link{https://dornsife.usc.edu/msl/faculty/}{USC's Modeling and Simulation Laboratory} while completing an M.S. in Applied Mathematics; master's research conducted in collaboration with NASA's Jet Propulsion Laboratory (JPL).
+\end{cvitems}
+
+% ===========================================================================
+\cvsection{SELECTED INDUSTRY \& RESEARCH COLLABORATIONS}
+
+\cventry{\link{https://www.dlr.de/de/qt}{German Aerospace Center (DLR)} — Real-Time Control / Quantum Technologies}{2025 – present}
+\begin{cvitems}
+  \item Collaborate with the DLR Institute of Quantum Technologies on control software for a space-ready quantum-memory system based on atomic-gas technology.
+  \item Contribute to the architecture and development of the real-time control system and scientist-facing software, using ARTIQ/Sinara with an FPGA-based core device for deterministic control and hardware integration.
+  \item Work on real-time state-machine control, experimental parameter management, measurement and imaging acquisition, hardware integration, and FPGA-controlled instrumentation.
+\end{cvitems}
+
+\cventry{\link{https://tensor-solutions.com}{Tensor AI Solutions} — HPC / Tensor Networks}{2024}
+\begin{cvitems}
+  \item Collaborated with Tensor AI Solutions on the design and development of Tartarus, a C++ HPC library for efficient tensor contractions in tree-tensor-network applications for machine learning and QML.
+  \item Co-supervised a research-driven student project, contributing substantially to the numerical algorithms, performance-oriented design, and development of the library.
+  \item Applied TTGT and Loops-over-GEMM (LoG) contraction schemes, BLAS kernels (GEMM, GEMV, GER, DOT), memory-layout-aware algorithms, and Python-based C++ code generation to optimize tensor contractions on CPUs.
+\end{cvitems}
+
+\cventry{\link{https://www.mercedes-benz-techinnovation.com/en}{Daimler TSS} (Daimler Group) — Machine Learning / Recurrent Neural Networks}{2017 – 2018}
+\begin{cvitems}
+  \item Collaborated closely with Daimler TSS on the mathematical analysis of recurrent neural networks, with a particular focus on training and the vanishing/exploding gradient problem.
+  \item Co-supervised a research-driven bachelor's thesis, contributing substantially to the mathematical formulation, analysis, and development of the work.
+  \item Applied regression and optimization methods, gradient-based training and backpropagation, and mathematical analysis of feed-forward and Elman recurrent neural networks.
+\end{cvitems}
+
+% ===========================================================================
+\cvsection{EDUCATION}
+
+\cventry{Ph.D., Numerical Mathematics — Ulm University, Germany}{2008}
+\cvsubtitle{Dissertation: FLENS — A Flexible Library for Efficient Numerical Solutions · Advisor: Prof. Karsten Urban}
+
+\cventry{M.S., Mathematics — Ulm University, Germany}{2002}
+
+\cventry{M.S., Applied Mathematics — University of Southern California, Los Angeles, CA}{2001}
+
+\end{document}

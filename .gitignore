@@ -1,0 +1,10 @@
+# LuaLaTeX auxiliary files
+*.aux
+*.log
+*.out
+
+# Private build (with phone number); only resume_public.pdf is published
+/resume.pdf
+
+# OS files
+.DS_Store
