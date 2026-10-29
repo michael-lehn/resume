@@ -3,8 +3,9 @@
 *.log
 *.out
 
-# Private build (with phone number); only resume_public.pdf is published
+# Private builds (with phone number); only the *_public.pdf files are published
 /resume.pdf
+/cover_letter_dwave.pdf
 
 # OS files
 .DS_Store

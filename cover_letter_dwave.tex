@@ -1,0 +1,105 @@
+% cover_letter_dwave.tex -- cover letter for D-Wave Quantum, Senior Scientific
+% Software Developer [635], in the design of "Michael Lehn Cover Letter.pages"
+% Compile with: lualatex cover_letter_dwave.tex   (or: make)
+%
+% Layout values are measured from the PDF exported by Pages, in PDF points
+% (bp, 1/72 in; TeX's pt is slightly smaller); y coordinates of absolutely
+% placed elements are measured from the bottom of the page, as in PDF:
+%   A4, body text 62.35bp from the left and right edges, first baseline
+%   (salutation) 301.36bp below the top, bottom margin 56.7bp; font Arial;
+%   body 10bp with a line pitch of 13.13bp and one empty line between
+%   paragraphs; justified with hyphenation and first-fit line breaking.
+%   Header block 8bp with an 11bp line pitch at x = 426.38bp.
+%
+% The public version omits the phone number. It is built from this file with
+%   lualatex -jobname=cover_letter_dwave_public '\def\PublicVersion{}\input{cover_letter_dwave}'
+\documentclass[10pt]{article}
+
+\usepackage[a4paper,left=62.35bp,right=62.35bp,top=291.36bp,bottom=56.7bp,
+            headheight=0bp,headsep=0bp,footskip=0bp]{geometry}
+\usepackage[american]{babel}
+\usepackage{fontspec}
+\usepackage[HTML]{xcolor}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+\usepackage{lua-ul}
+\usepackage{hyperref}
+
+% Pages breaks lines first-fit; TeX's paragraph optimizer would not
+\directlua{dofile(kpse.find_file("firstfit.lua", "lua"))}
+
+% Arial if installed, otherwise its metric-compatible clone Arimo.
+% No ligatures, and no TeX input mapping (keeps straight quotes as typed).
+\IfFontExistsTF{Arial}
+  {\setmainfont{Arial}[Ligatures={CommonOff,TeXOff}]}
+  {\setmainfont{Arimo}[Ligatures={CommonOff,TeXOff}]}
+
+\definecolor{link}{HTML}{000099}     % hyperlinks (Pages: RGB 0 0 0.6)
+
+\hypersetup{hidelinks, pdftitle={Michael Lehn -- Cover Letter -- D-Wave Quantum},
+            pdfauthor={Michael Lehn}}
+
+% Hyperlink in the Pages style: blue and underlined; the underline is
+% 0.586bp thick, centered 0.47bp below the baseline.
+\newunderlinetype\linkUnderLine{\leaders\vrule height -0.177bp depth 0.763bp}
+\newcommand{\link}[2]{\href{#1}{\textcolor{link}{\linkUnderLine{#2}}}}
+
+% ---------------------------------------------------------------------------
+% Letterhead, placed absolutely on the page
+\newcommand{\letterdate}{October 29, 2026}
+
+\AddToShipoutPictureBG*{%
+  \setlength{\unitlength}{1bp}%
+  % Ulm University seal and logo
+  \put(56.7,752.9){\includegraphics[width=481.2bp,height=49.4bp]{uulm-logo.png}}%
+  % Fold mark and hole-punch mark (105mm and 148mm from the top)
+  \put(0,544.3){\color{black}\rule[-0.125bp]{29.6bp}{0.25bp}}%
+  \put(0,422.4){\color{black}\rule[-0.125bp]{29.6bp}{0.25bp}}%
+  % Sender: first baseline at y = 724.707bp, empty lines between groups
+  \put(426.3833,724.707){\vtop{%
+    \hsize=165bp \parindent=0bp \parskip=0bp
+    \fontsize{8bp}{11bp}\selectfont
+    \textbf{Michael Lehn, Ph.D.}\par
+    Scientific Software Developer\par
+    \strut\par
+    Helmholtzstrasse 20\par
+    89081 Ulm, Germany\par
+    \strut\par
+    \ifdefined\PublicVersion\else Mobile:\ \ +49 178 821-8422\par\fi
+    Email: \link{mailto:michael.lehn@uni-ulm.de}{michael.lehn@uni-ulm.de}\par
+    GitHub: \link{https://github.com/michael-lehn}{github.com/michael-lehn}\par
+    \strut\par
+    \textbf{\letterdate}\par}}%
+}
+
+% ---------------------------------------------------------------------------
+\setlength{\parindent}{0bp}
+\setlength{\parskip}{13.1346bp}  % one empty line between paragraphs
+\setlength{\topskip}{10bp}
+\pagestyle{empty}
+
+\begin{document}
+\hyphenation{HeraldRT SystemVerilog ulmBLAS FLENS D-Wave}
+\fontsize{10bp}{13.1346bp}\selectfont
+\frenchspacing       % uniform interword spaces after punctuation, as in Pages
+\tolerance=9999      % Pages stretches interword spaces freely in justified text
+\emergencystretch=0bp
+
+Dear D-Wave Hiring Team,
+
+I am applying for the Senior Scientific Software Developer position in Burnaby. I am a scientific software developer with over 20 years of hands-on experience in C/C++, numerical mathematics, high-performance computing, and software architecture. At Ulm University, I design, implement, and maintain numerical and systems software together with scientists and engineers. Designing, implementing, debugging, and optimizing scientific software is what I enjoy most and what I want to focus on professionally.
+
+Much of my work has gone into numerical libraries. FLENS, the C++ framework I developed, maps high-level matrix abstractions directly to optimized BLAS and LAPACK kernels without abstraction overhead; my BLAS library ulmBLAS separates portable blocking algorithms from small, architecture-specific micro-kernels and reaches performance close to vendor libraries. Maintaining both over many years has taught me to treat architecture, testing, benchmarking, and documentation as part of the engineering work.
+
+With the Institute of Quantum Technologies at the German Aerospace Center (DLR), I am developing HeraldRT, a SystemVerilog design for FPGA-based real-time control of quantum-memory experiments. It has been simulated, synthesized, placed, and routed; testing on physical hardware is the next step. The work requires translating the physicists' requirements into deterministic hardware behavior, meeting timing constraints, and defining clean hardware/software interfaces; it builds directly on my background in processor architecture, FPGA design, and low-level programming.
+
+As managing director of the Ulm Center for Scientific Computing, I translated problems of industrial and research partners into mathematical models and working software, often implementing the complete application myself. I am used to taking ownership of a problem: understanding the requirements, investigating failures until the cause is clear, implementing a solution, and validating the result.
+
+What attracts me to this position is that it combines hands-on scientific software engineering, from calibration to hardware interfaces and system testing, with direct collaboration with the physicists and hardware engineers who develop D-Wave's quantum processors. My quantum-related experience so far concerns quantum-memory experiments rather than superconducting processors, and I look forward to learning D-Wave's technology from the people who build it. I am willing to relocate to the Vancouver/Burnaby area.
+
+Thank you for your consideration.
+
+Sincerely,
+
+Michael Lehn
+\end{document}
