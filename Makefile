@@ -8,7 +8,8 @@ LUALATEX = lualatex -interaction=nonstopmode -halt-on-error
 
 all: resume.pdf resume_public.pdf cover_letter_dwave.pdf cover_letter_dwave_public.pdf
 
-resume.pdf: resume.tex firstfit.lua
+# Private versions (with phone number) need private.tex, which is not committed
+resume.pdf: resume.tex firstfit.lua private.tex
 	$(LUALATEX) resume.tex
 	$(LUALATEX) resume.tex
 
@@ -16,7 +17,7 @@ resume_public.pdf: resume.tex firstfit.lua
 	$(LUALATEX) -jobname=resume_public '\def\PublicVersion{}\input{resume}'
 	$(LUALATEX) -jobname=resume_public '\def\PublicVersion{}\input{resume}'
 
-cover_letter_dwave.pdf: cover_letter_dwave.tex firstfit.lua uulm-logo.png
+cover_letter_dwave.pdf: cover_letter_dwave.tex firstfit.lua uulm-logo.png private.tex
 	$(LUALATEX) cover_letter_dwave.tex
 	$(LUALATEX) cover_letter_dwave.tex
 

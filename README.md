@@ -12,7 +12,9 @@ make            # builds the resume and cover letter PDFs
 ```
 
 `resume_public.pdf` is the same document without the phone number
-(`\PublicVersion`). The layout reproduces the original Pages document: Arial
+(`\PublicVersion`). The phone number lives in `private.tex`, which is not
+committed (it defines `\PrivatePhone`); the private versions `resume.pdf` and
+`cover_letter_dwave.pdf` refuse to build without it. The layout reproduces the original Pages document: Arial
 (or the metric-compatible Arimo if Arial is not installed), and first-fit line
 breaking as in Pages (`firstfit.lua`). The Makefile builds with a fixed
 `SOURCE_DATE_EPOCH` so that rebuilt PDFs are reproducible.

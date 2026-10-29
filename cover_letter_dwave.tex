@@ -11,7 +11,8 @@
 %   paragraphs; justified with hyphenation and first-fit line breaking.
 %   Header block 8bp with an 11bp line pitch at x = 426.38bp.
 %
-% The public version omits the phone number. It is built from this file with
+% The phone number is read from private.tex (not committed). The public
+% version omits it and is built from this file with
 %   lualatex -jobname=cover_letter_dwave_public '\def\PublicVersion{}\input{cover_letter_dwave}'
 \documentclass[10pt]{article}
 
@@ -65,12 +66,19 @@
     Helmholtzstrasse 20\par
     89081 Ulm, Germany\par
     \strut\par
-    \ifdefined\PublicVersion\else Mobile:\ \ +49 178 821-8422\par\fi
+    \ifdefined\PublicVersion\else Mobile:\ \ \PrivatePhone\par\fi
     Email: \link{mailto:michael.lehn@uni-ulm.de}{michael.lehn@uni-ulm.de}\par
     GitHub: \link{https://github.com/michael-lehn}{github.com/michael-lehn}\par
     \strut\par
     \textbf{\letterdate}\par}}%
 }
+
+% Private contact details (phone) come from private.tex, which is not
+% committed; the private version is not built without it.
+\ifdefined\PublicVersion\else
+  \InputIfFileExists{private.tex}{}%
+    {\errmessage{private.tex not found; it is required for the private version}}
+\fi
 
 % ---------------------------------------------------------------------------
 \setlength{\parindent}{0bp}
@@ -95,7 +103,7 @@ With the Institute of Quantum Technologies at the German Aerospace Center (DLR),
 
 As managing director of the Ulm Center for Scientific Computing, I translated problems of industrial and research partners into mathematical models and working software, often implementing the complete application myself. I am used to taking ownership of a problem: understanding the requirements, investigating failures until the cause is clear, implementing a solution, and validating the result.
 
-What attracts me to this position is that it combines hands-on scientific software engineering, from calibration to hardware interfaces and system testing, with direct collaboration with the physicists and hardware engineers who develop D-Wave's quantum processors. My quantum-related experience so far concerns quantum-memory experiments rather than superconducting processors, and I look forward to learning D-Wave's technology from the people who build it. I am willing to relocate to the Vancouver/Burnaby area.
+What attracts me to this position is that it combines hands-on scientific software engineering, from calibration to hardware interfaces and system testing, with direct collaboration with the physicists and hardware engineers who develop D-Wave's quantum processors. The control software I build for quantum-memory experiments at DLR faces similar demands: precise timing, reliable hardware interfaces, and close iteration with the physicists who use it. I am willing to relocate to the Vancouver/Burnaby area.
 
 Thank you for your consideration.
 

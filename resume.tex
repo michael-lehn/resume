@@ -7,7 +7,8 @@
 %   to 756bp; font Arial; body 10bp with Pages' single line spacing for
 %   Arial (11.45bp).
 %
-% The public version omits the phone number. It is built from this file with
+% The phone number is read from private.tex (not committed). The public
+% version omits it and is built from this file with
 %   lualatex -jobname=resume_public '\def\PublicVersion{}\input{resume}'
 \documentclass[10pt]{article}
 
@@ -108,6 +109,13 @@
   {\end{itemize}\gdef\cv@entryskip{4.6bp}}
 \makeatother
 
+% Private contact details (phone) come from private.tex, which is not
+% committed; the private version is not built without it.
+\ifdefined\PublicVersion\else
+  \InputIfFileExists{private.tex}{}%
+    {\errmessage{private.tex not found; it is required for the private version}}
+\fi
+
 % ---------------------------------------------------------------------------
 \setlength{\parindent}{0bp}
 \setlength{\parskip}{0bp}
@@ -138,13 +146,13 @@
     \spaceskip=\dimexpr\fontdimen2\font+0.8bp\relax % tracking applies to spaces, too
     Scientific Software Engineer\sep C/C++\sep Compilers \& LLVM\sep High-Performance Computing\par}
   \vspace{1.9bp}
-  {\contactsize Ulm, Germany\sep Open to relocation to the United States\par}
+  {\contactsize Ulm, Germany\sep Open to relocation to the United States and Canada\par}
   {\contactsize
-    \link{mailto:michael.lehn@mac.com}{michael.lehn@mac.com}%
+    \link{mailto:michael.lehn@uni-ulm.de}{michael.lehn@uni-ulm.de}%
     \ifdefined\PublicVersion
       \ \ ·\ \link{https://www.linkedin.com/in/michael-l-2b4a4829b/}{LinkedIn}%
     \else
-      \sep +1 (213) 232-7502\sep\link{https://www.linkedin.com/in/michael-l-2b4a4829b/}{LinkedIn}%
+      \sep \PrivatePhone\sep\link{https://www.linkedin.com/in/michael-l-2b4a4829b/}{LinkedIn}%
     \fi
     \sep\link{https://github.com/michael-lehn}{GitHub}%
     \ ·\ \ \link{https://www.uni-ulm.de/mawi/institut-fuer-numerische-mathematik/institut/mitarbeiter/mlehn/}{Ulm University}\par}
@@ -235,9 +243,9 @@ Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experienc
 
 \cventry{\link{https://www.dlr.de/de/qt}{German Aerospace Center (DLR)} — Real-Time Control / Quantum Technologies}{2025 – present}
 \begin{cvitems}
-  \item Collaborate with the DLR Institute of Quantum Technologies on control software for a space-ready quantum-memory system based on atomic-gas technology.
-  \item Contribute to the architecture and development of the real-time control system and scientist-facing software, using ARTIQ/Sinara with an FPGA-based core device for deterministic control and hardware integration.
-  \item Work on real-time state-machine control, experimental parameter management, measurement and imaging acquisition, hardware integration, and FPGA-controlled instrumentation.
+  \item Collaborate with the DLR Institute of Quantum Technologies on real-time control for a space-ready quantum-memory system based on atomic-gas technology, using ARTIQ/Sinara with an FPGA-based core device.
+  \item Develop HeraldRT, an FPGA-based real-time controller in SystemVerilog that maps the physicists' timing requirements to deterministic hardware. Simulated, synthesized, placed, and routed; hardware validation pending.
+  \item Contribute to the architecture of the real-time control system and scientist-facing software: state-machine control, experimental parameter management, measurement and imaging acquisition, and hardware integration.
 \end{cvitems}
 
 \cventry{\link{https://tensor-solutions.com}{Tensor AI Solutions} — HPC / Tensor Networks}{2024}
