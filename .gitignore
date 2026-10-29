@@ -3,9 +3,12 @@
 *.log
 *.out
 
-# Private builds (with phone number); only the *_public.pdf files are published
+# Private build (with phone number); only resume_public.pdf is published
 /resume.pdf
-/cover_letter_dwave.pdf
+
+# Cover letters are private application documents (sources, PDFs, Pages files)
+cover_letter*
+Michael Lehn Cover Letter*
 
 # Private contact details (phone number) for the private builds
 /private.tex

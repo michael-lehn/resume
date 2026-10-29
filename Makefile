@@ -1,12 +1,15 @@
-# Build the resume and cover letter PDFs with LuaLaTeX and a fixed timestamp (reproducible)
+# Build the resume PDFs with LuaLaTeX and a fixed timestamp (reproducible)
 export SOURCE_DATE_EPOCH = 1792800000
 export FORCE_SOURCE_DATE = 1
 
 LUALATEX = lualatex -interaction=nonstopmode -halt-on-error
 
-.PHONY: all clean
+# Cover letters are private and not committed; build them with 'make letters'
+.PHONY: all letters clean
 
-all: resume.pdf resume_public.pdf cover_letter_dwave.pdf cover_letter_dwave_public.pdf
+all: resume.pdf resume_public.pdf
+
+letters: cover_letter_dwave.pdf cover_letter_dwave_public.pdf
 
 # Private versions (with phone number) need private.tex, which is not committed
 resume.pdf: resume.tex firstfit.lua private.tex
