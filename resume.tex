@@ -146,7 +146,7 @@
     \spaceskip=\dimexpr\fontdimen2\font+0.8bp\relax % tracking applies to spaces, too
     Scientific Software Engineer\sep C/C++\sep Compilers \& LLVM\sep High-Performance Computing\par}
   \vspace{1.9bp}
-  {\contactsize Ulm, Germany\sep Open to relocation to the United States and Canada\par}
+  {\contactsize Ulm, Germany\sep Open to relocation to the United States or Canada\par}
   {\contactsize
     \link{mailto:michael.lehn@uni-ulm.de}{michael.lehn@uni-ulm.de}%
     \ifdefined\PublicVersion
@@ -162,26 +162,26 @@
 % ===========================================================================
 \cvsection{SUMMARY}
 
-Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experience developing performance-critical C/C++ software. Expertise spans numerical algorithms and high-performance linear algebra, memory hierarchy and cache-aware algorithms, SIMD, multithreaded and distributed computing, CPU architecture, compiler construction, and low-level systems programming. Recent projects include an LLVM-based systems programming language with native C interoperability, a minimal self-hosting compiler, and custom CPU architectures implemented on FPGA.\par
+Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experience developing performance-critical C/C++ software. Expertise spans numerical algorithms and high-performance linear algebra, memory hierarchy and cache-aware algorithms, SIMD, multithreaded and distributed computing, CPU architecture, compiler construction, and low-level systems programming. Recent projects include cross-architecture BLAS micro-kernels (x86-64, ARM SME2, CUDA), event-driven FPGA control for quantum experiments, and an LLVM-based compiler.\par
 
 % ===========================================================================
 \cvsection{TECHNICAL SKILLS}
 
 \skill{Languages:}{C++ (modern, templates/compile-time techniques), C, Python, Assembly (x86-64, AArch64, custom RISC), LLVM IR, SystemVerilog, Java, Perl}
-\skill{Performance \& HPC:}{Numerical linear algebra, BLAS, LAPACK, ScaLAPACK, SIMD micro-kernels (SSE3), cache-aware/blocked algorithms, std::thread, OpenMP, MPI, CUDA, GPU and distributed-memory computing, benchmarking and profiling}
-\skill{Compilers \& Systems:}{LLVM, compiler construction, code generation, x86-64 System V ABI, C interoperability, ISA design, CPU architecture, FPGA (iCE40, ARTIQ/Sinara), bare-metal programming}
-\skill{Tools:}{Linux/Unix, macOS, Git, Qt, CMake, GNU Make, GDB, Valgrind, perf, Intel VTune, NVIDIA Nsight}
+\skill{Performance \& HPC:}{Numerical linear algebra, BLAS, LAPACK, ScaLAPACK, SIMD micro-kernels (SSE3, NEON, SME2), cache-aware/blocked algorithms, std::thread, OpenMP, MPI, CUDA/Tensor Cores, benchmarking and profiling}
+\skill{Compilers \& Systems:}{LLVM, compiler construction, code generation, x86-64 System V ABI, C interoperability, ISA design, CPU architecture, FPGA (iCE40, Artix-7/Sinara), bare-metal programming}
+\skill{Tools:}{Linux/Unix, macOS, Git, CMake, GDB, Valgrind, perf, Intel VTune, NVIDIA Nsight, Verilator, cocotb, Yosys}
 
 % ===========================================================================
 \cvsection{SELECTED PROJECTS (OPEN SOURCE)}
 
-\cventry{{\mdseries\link{https://github.com/michael-lehn/ulmBLAS}{ulmBLAS}} — High-Performance BLAS Library}{C++ · Assembly}
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulmBLAS}{ulmBLAS}} — High-Performance BLAS Library}{C++ · Assembly · CUDA}
 \begin{cvitems}
-  \item Designed and implemented a BLAS library based on the layered architecture pioneered by BLIS, combining portable blocking/packing algorithms in C++ with small, replaceable architecture-specific micro-kernels.
-  \item Reached \textasciitilde97\% of Intel MKL DGEMM performance with BLIS micro-kernels; wrote custom SSE3 micro-kernels and a plug-in interface for externally optimized kernels.
-  \item Drove blocked LAPACK routines (e.g., DGETRF) at performance comparable to vendor LAPACK implementations.
-  \item Authored the \link{https://github.com/michael-lehn/gemm-tutorial}{GEMM Tutorial} on optimizing matrix multiplication from pure C to SSE micro-kernels; referenced by the \link{https://github.com/flame/how-to-optimize-gemm}{FLAME project's GEMM optimization resources}.
-  \item Used in \link{https://www.meta.com/de/en/legal/quest/third-party-notices/14/}{Meta Quest software}; listed in Meta’s official third-party software notices.
+  \item Designed a complete BLAS library (levels 1–3, four data types) on the layered BLIS architecture: portable C++ blocking and packing with replaceable micro-kernels; tested with the Netlib BLAS and Reference-LAPACK suites.
+  \item Wrote SSE3, NEON, and SME2 kernels and integrated BLIS, AOCL, and OpenBLAS kernels; with OpenBLAS's kernel, single-threaded DGEMM reaches \textasciitilde97\% of OpenBLAS and \textasciitilde99\% of oneMKL (Ice Lake, n~≥~1000).
+  \item Experimental Apple M5 SME2 backend: DGEMM up to 490 GFLOP/s, 1.06–1.15× Apple Accelerate for n~≥~1050; Accelerate is still faster for medium sizes.
+  \item CUDA DGEMM tutorial (in progress): Tensor Core kernels reach 0.82 of cuBLAS on an NVIDIA A100 (n~≥~1000).
+  \item Authored the \link{https://github.com/michael-lehn/gemm-tutorial}{GEMM Tutorial} (referenced by \link{https://github.com/flame/how-to-optimize-gemm}{FLAME}); ulmBLAS is used in \link{https://www.meta.com/de/en/legal/quest/third-party-notices/14/}{Meta Quest software}.
 \end{cvitems}
 
 \cventry{{\mdseries\link{https://github.com/michael-lehn/abc-llvm}{ABC}} ("A Better C") — Systems Language \& LLVM Compiler}{C++ · LLVM}
@@ -204,14 +204,19 @@ Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experienc
   \item Defined a declarative ISA description format and built a generator producing an assembler, virtual machine, instruction-level debugger, and documentation from a single specification.
 \end{cvitems}
 
+\cventry{{\mdseries\link{https://github.com/michael-lehn/qubic-notes}{qubic-notes}} — QubiC Compiler, ISA \& RTL Simulation}{Python · Verilog · cocotb}
+\begin{cvitems}
+  \item Studied LBNL's open-source QubiC qubit-control system; documented its compiler and ISA and built QD, a prototype quantum-control DSL compiled through QubiC-IR and the QubiC toolchain to machine code.
+  \item Explored explicit timing and synchronization semantics (parallel joins, channel placement, ordering after runtime loops); verified only in cycle-accurate RTL simulation of QubiC's cores, FPROC, and shot sequencer.
+\end{cvitems}
+
 % ===========================================================================
 \cvsection{PROFESSIONAL EXPERIENCE}
 
 \cventry{Ulm University — Institute of Numerical Mathematics · Ulm, Germany}{2008 – present}
 \cvsubtitle{Tenured Faculty Member (Akademischer Rat auf Lebenszeit), Numerical Mathematics}
 \begin{cvitems}
-  \item Develop and maintain open-source numerical and systems software in C/C++: high-performance BLAS/LAPACK kernels (ulmBLAS), a numerical computing framework (FLENS), an LLVM-based systems language and compiler (ABC), and ISA/FPGA CPU tooling (ulm-generator / ulm-on-iCE).
-  \item Own the full engineering lifecycle for these codebases: architecture, implementation, testing, performance benchmarking and profiling, documentation, and long-term maintenance.
+  \item Develop and maintain the open-source projects above and own their full engineering lifecycle: architecture, implementation, testing, performance benchmarking and profiling, documentation, and long-term maintenance.
   \item Design and teach courses in high-performance computing, compiler construction, systems programming, numerical mathematics, and scientific computing; the HPC curriculum progresses from memory hierarchy and cache-aware algorithms through SIMD micro-kernels and shared-memory parallelism to MPI and GPU computing.
   \item Built a full-stack computing curriculum spanning logic gates, registers and ALUs, ISA design, assembly, systems programming, and compiler construction, supported by custom-developed software and FPGA hardware.
 \end{cvitems}
@@ -228,8 +233,7 @@ Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experienc
 \cventry{Ulm University — Institute of Numerical Mathematics · Ulm, Germany}{2002 – 2008}
 \cvsubtitle{Research Associate}
 \begin{cvitems}
-  \item Conducted research and software development in scientific computing and numerical linear algebra, with a focus on high-performance numerical software in C++.
-  \item Designed and developed FLENS (Flexible Library for Efficient Numerical Solutions) as the core of my doctoral research on efficient, abstraction-preserving numerical software in C++.
+  \item Conducted research and software development in scientific computing and numerical linear algebra; developed FLENS as the core of my doctoral research on efficient, abstraction-preserving numerical software in C++.
 \end{cvitems}
 
 \cventry{University of Southern California — Modeling and Simulation Laboratory · Los Angeles, CA}{1999 – 2001}
@@ -243,23 +247,21 @@ Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experienc
 
 \cventry{\link{https://www.dlr.de/de/qt}{German Aerospace Center (DLR)} — Real-Time Control / Quantum Technologies}{2025 – present}
 \begin{cvitems}
-  \item Collaborate with the DLR Institute of Quantum Technologies on real-time control for a space-ready quantum-memory system based on atomic-gas technology, using ARTIQ/Sinara with an FPGA-based core device.
-  \item Develop HeraldRT, an FPGA-based real-time controller in SystemVerilog that maps the physicists' timing requirements to deterministic hardware. Simulated, synthesized, placed, and routed; hardware validation pending.
-  \item Contribute to the architecture of the real-time control system and scientist-facing software: state-machine control, experimental parameter management, measurement and imaging acquisition, and hardware integration.
+  \item Collaborate with the DLR Institute of Quantum Technologies on real-time control of a space-ready atomic-gas quantum memory; analyzed the ARTIQ/Sinara architecture and proposed FPGA logic for latency-critical reactions.
+  \item Develop \link{https://github.com/michael-lehn/herald-rt}{HeraldRT}, an event-driven SystemVerilog controller for Sinara Kasli (Artix-7): a herald photon switches lasers off via a processor-free hardware path; a synchronous path time-stamps and sequences the experiment.
+  \item Simulated (800 self-checks), synthesized, placed, and routed with the open-source openXC7 flow, and generated a bitstream; hardware tests, latency and jitter measurements, and Vivado timing sign-off are pending.
 \end{cvitems}
 
 \cventry{\link{https://tensor-solutions.com}{Tensor AI Solutions} — HPC / Tensor Networks}{2024}
 \begin{cvitems}
   \item Collaborated with Tensor AI Solutions on the design and development of Tartarus, a C++ HPC library for efficient tensor contractions in tree-tensor-network applications for machine learning and QML.
   \item Co-supervised a research-driven student project, contributing substantially to the numerical algorithms, performance-oriented design, and development of the library.
-  \item Applied TTGT and Loops-over-GEMM (LoG) contraction schemes, BLAS kernels (GEMM, GEMV, GER, DOT), memory-layout-aware algorithms, and Python-based C++ code generation to optimize tensor contractions on CPUs.
+  \item Applied TTGT and Loops-over-GEMM (LoG) contraction schemes, BLAS kernels (GEMM, GEMV, GER, DOT), memory-layout-aware algorithms, and Python-based C++ code generation to optimize CPU tensor contractions.
 \end{cvitems}
 
 \cventry{\link{https://www.mercedes-benz-techinnovation.com/en}{Daimler TSS} (Daimler Group) — Machine Learning / Recurrent Neural Networks}{2017 – 2018}
 \begin{cvitems}
-  \item Collaborated closely with Daimler TSS on the mathematical analysis of recurrent neural networks, with a particular focus on training and the vanishing/exploding gradient problem.
-  \item Co-supervised a research-driven bachelor's thesis, contributing substantially to the mathematical formulation, analysis, and development of the work.
-  \item Applied regression and optimization methods, gradient-based training and backpropagation, and mathematical analysis of feed-forward and Elman recurrent neural networks.
+  \item Collaborated with Daimler TSS on the mathematical analysis of training recurrent neural networks (vanishing and exploding gradients); co-supervised a research-driven bachelor's thesis.
 \end{cvitems}
 
 % ===========================================================================
