@@ -199,11 +199,11 @@ Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experienc
   \item Generic architecture: algorithms run unchanged on local, distributed, GPU-resident, and implicit matrices; compile-time C++ techniques map operations to optimized kernels and detect costly temporaries.
 \end{cvitems}
 
-\cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-lam}{ulm.lam}} — Linear Algebra Compiler on MLIR (early prototype, started 2026)}{C++ · MLIR · Python · Julia}
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-lam}{ulm.lam}} — Linear Algebra Compiler on MLIR (early prototype)}{C++ · MLIR · Python · Julia}
 \begin{cvitems}
-  \item Linear algebra written as formulas in Julia or Python, with declared matrix properties (SPD, triangular, full rank), is compiled into the BLAS/LAPACK calls a numerical analyst would write: factorizations instead of inverses, each computed once; symmetric products as syrk; product order chosen by flop count, at run time if needed.
-  \item Two MLIR dialects (algebra on property-carrying tensor types; BLAS/LAPACK kernels in destination-passing style); property inference and Linnea-style kernel selection as passes; one-shot bufferization into one reused workspace; LAPACK-style info codes; EmitC lowering to C++ for ulmBLAS, Julia's BLAS, or any CBLAS/LAPACK.
-  \item Automates the formula-to-kernel mapping I did by hand for FLENS-LAPACK. First results: generalized least squares as fast as expert-written Julia, allocating KiB instead of MiB; Gaussian-process regression with n~=~100{,}000 on a 96-thread node as fast as hand-written MKL code.
+  \item Developing a compiler that translates linear algebra formulas written in Julia or Python into BLAS/LAPACK calls, using declared matrix properties to choose factorizations, exploit symmetry, and avoid explicit inverses.
+  \item Built two MLIR dialects, for matrix expressions and for BLAS/LAPACK kernels, with passes for property inference, kernel selection, and workspace reuse; generates C++ for ulmBLAS, Julia's BLAS, or any CBLAS/LAPACK. Automates the formula-to-kernel mapping I implemented by hand in FLENS-LAPACK.
+  \item In initial generalized least-squares benchmarks (n~=~2000, m~=~50), runtime is comparable to an expert-written Julia version; temporaries live in a workspace reused across calls, so each call allocates KiB instead of MiB.
 \end{cvitems}
 
 \cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-on-ice}{ulm-on-iCE}} / {\mdseries\link{https://github.com/michael-lehn/ulm-generator}{ulm-generator}} — FPGA CPU \& ISA Toolchain}{SystemVerilog · C/C++ · Assembly}
