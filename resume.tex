@@ -144,7 +144,7 @@
 {\centering
   {\taglinesize\addfontfeatures{LetterSpace=7.6}\color{tagline}%
     \spaceskip=\dimexpr\fontdimen2\font+0.8bp\relax % tracking applies to spaces, too
-    Compilers \& LLVM\sep ISA \& Hardware\sep Numerical Performance Engineering\sep C/C++\par}
+    Scientific Software Engineer\sep C/C++\sep Compilers \& LLVM\sep High-Performance Computing\par}
   \vspace{1.9bp}
   {\contactsize Ulm, Germany\par}
   {\contactsize
@@ -162,7 +162,7 @@
 % ===========================================================================
 \cvsection{SUMMARY}
 
-Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C/C++ development where compilers, instruction sets, and numerical performance meet: I designed a 64-bit RISC ISA with a generated toolchain and an FPGA implementation, built an LLVM-based compiler with C ABI lowering, and develop BLAS micro-kernels for x86-64, ARM SME2, and CUDA that rival vendor libraries. Currently extending my compiler experience to MLIR.\par
+Software engineer and mathematician (Ph.D.) with 20+ years of hands-on experience developing performance-critical C/C++ software. Expertise spans numerical algorithms and high-performance linear algebra, memory hierarchy and cache-aware algorithms, SIMD, multithreaded and distributed computing, CPU architecture, compiler construction, and low-level systems programming. Recent projects include cross-architecture BLAS micro-kernels (x86-64, ARM SME2, CUDA), an LLVM-based compiler, an early-stage linear algebra compiler on MLIR, and event-driven FPGA control for quantum experiments.\par
 
 % ===========================================================================
 \cvsection{TECHNICAL SKILLS}
@@ -175,6 +175,30 @@ Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C
 % ===========================================================================
 \cvsection{SELECTED PROJECTS (OPEN SOURCE)}
 
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulmBLAS}{ulmBLAS}} — High-Performance BLAS Library}{C++ · Assembly · CUDA}
+\begin{cvitems}
+  \item Designed a complete BLAS library (levels 1–3, four data types) on the layered BLIS architecture: portable C++ blocking and packing with replaceable micro-kernels; tested with the Netlib BLAS and Reference-LAPACK suites.
+  \item Wrote SSE3, NEON, and SME2 kernels and integrated BLIS, AOCL, and OpenBLAS kernels; with OpenBLAS's kernel, single-threaded DGEMM reaches \textasciitilde97\% of OpenBLAS and \textasciitilde99\% of oneMKL (Ice Lake, n~≥~1000).
+  \item Experimental Apple M5 SME2 backend: DGEMM up to 490 GFLOP/s, 1.06–1.15× Apple Accelerate for n~≥~1050; Accelerate is still faster for medium sizes.
+  \item Release 0.4.0 (November 2026): shared libraries that select SME2/NEON or AVX-512/AVX2/SSE3 kernels at load time, so NumPy and SciPy run on ulmBLAS unchanged. For Julia: ulmBLAS\_jll built with Yggdrasil and registered, and \link{https://github.com/michael-lehn/UlmBLAS.jl}{UlmBLAS.jl} (registration in progress), which makes ulmBLAS Julia's BLAS via libblastrampoline.
+  \item In progress: LU and Cholesky factorizations, solves, and inverses as stride-generic C++ templates, parallelized with PLASMA-style OpenMP tasks; GEMM with bfloat16 and FP16 inputs.
+  \item CUDA DGEMM tutorial (in progress): Tensor Core kernels reach 0.82 of cuBLAS on an NVIDIA A100 (n~≥~1000). Authored the \link{https://github.com/michael-lehn/gemm-tutorial}{GEMM Tutorial} (referenced by \link{https://github.com/flame/how-to-optimize-gemm}{FLAME}); ulmBLAS is used in \link{https://www.meta.com/de/en/legal/quest/third-party-notices/14/}{Meta Quest software}.
+\end{cvitems}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/abc-llvm}{ABC}} ("A Better C") — Systems Language \& LLVM Compiler}{C++ · LLVM}
+\begin{cvitems}
+  \item Designed a small systems language exposing C's machine model with simplified declaration syntax; built an LLVM-based compiler with interchangeable backends targeting LLVM IR and custom ULM assembly.
+  \item Implemented native C interoperability with x86-64 System V ABI lowering, enabling direct use of existing C libraries without wrappers; demonstrated with raylib applications.
+  \item Isolated a wrong-code bug in LLVM's optimizer and reported it upstream with a minimal reproducer (\mbox{\link{https://github.com/llvm/llvm-project/issues/235074}{\#235074}}).
+  \item Wrote \link{https://github.com/michael-lehn/not-abc}{not-abc}, a small compiler first implemented in ABC, then rewritten in its own language (self-hosting).
+\end{cvitems}
+
+\cventry{{\mdseries\link{https://github.com/michael-lehn/FLENS}{FLENS}} — Flexible Library for Efficient Numerical Solutions}{C++}
+\begin{cvitems}
+  \item Built a numerical computing framework combining MATLAB-like abstractions with direct access to optimized BLAS/LAPACK kernels, achieving zero abstraction overhead as verified by benchmarks and generated assembly.
+  \item Generic architecture: algorithms run unchanged on local, distributed, GPU-resident, and implicit matrices; compile-time C++ techniques map operations to optimized kernels and detect costly temporaries.
+\end{cvitems}
+
 \cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-lam}{ulm.lam}} — Linear Algebra Compiler on MLIR (early prototype, started 2026)}{C++ · MLIR · Python · Julia}
 \begin{cvitems}
   \item Linear algebra written as formulas in Julia or Python, with declared matrix properties (SPD, triangular, full rank), is compiled into the BLAS/LAPACK calls a numerical analyst would write: factorizations instead of inverses, each computed once; symmetric products as syrk; product order chosen by flop count, at run time if needed.
@@ -186,30 +210,6 @@ Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C
 \begin{cvitems}
   \item Designed and implemented a custom RISC CPU in SystemVerilog on an iCE40 FPGA, from digital logic and ISA design to assembly programs running on physical hardware.
   \item Defined a declarative ISA description format and built a generator producing an assembler, virtual machine, instruction-level debugger, and documentation from a single specification.
-\end{cvitems}
-
-\cventry{{\mdseries\link{https://github.com/michael-lehn/abc-llvm}{ABC}} ("A Better C") — Systems Language \& LLVM Compiler}{C++ · LLVM}
-\begin{cvitems}
-  \item Designed a small systems language exposing C's machine model with simplified declaration syntax; built an LLVM-based compiler with interchangeable backends targeting LLVM IR and custom ULM assembly.
-  \item Implemented native C interoperability with x86-64 System V ABI lowering, enabling direct use of existing C libraries without wrappers; demonstrated with raylib applications.
-  \item Isolated a wrong-code bug in LLVM's optimizer and reported it upstream with a minimal reproducer (\mbox{\link{https://github.com/llvm/llvm-project/issues/235074}{\#235074}}).
-  \item Wrote \link{https://github.com/michael-lehn/not-abc}{not-abc}, a small compiler first implemented in ABC, then rewritten in its own language (self-hosting).
-\end{cvitems}
-
-\cventry{{\mdseries\link{https://github.com/michael-lehn/ulmBLAS}{ulmBLAS}} — High-Performance BLAS Library}{C++ · Assembly · CUDA}
-\begin{cvitems}
-  \item Designed a complete BLAS library (levels 1–3, four data types) on the layered BLIS architecture: portable C++ blocking and packing with replaceable micro-kernels; tested with the Netlib BLAS and Reference-LAPACK suites.
-  \item Wrote SSE3, NEON, and SME2 kernels and integrated BLIS, AOCL, and OpenBLAS kernels; with OpenBLAS's kernel, single-threaded DGEMM reaches \textasciitilde97\% of OpenBLAS and \textasciitilde99\% of oneMKL (Ice Lake, n~≥~1000).
-  \item Experimental Apple M5 SME2 backend: DGEMM up to 490 GFLOP/s, 1.06–1.15× Apple Accelerate for n~≥~1050; Accelerate is still faster for medium sizes.
-  \item Release 0.4.0 (November 2026): shared libraries that select SME2/NEON or AVX-512/AVX2/SSE3 kernels at load time, so NumPy and SciPy run on ulmBLAS unchanged. For Julia: ulmBLAS\_jll built with Yggdrasil and registered, and \link{https://github.com/michael-lehn/UlmBLAS.jl}{UlmBLAS.jl} (registration in progress), which makes ulmBLAS Julia's BLAS via libblastrampoline.
-  \item In progress: LU and Cholesky factorizations, solves, and inverses as stride-generic C++ templates, parallelized with PLASMA-style OpenMP tasks; GEMM with bfloat16 and FP16 inputs.
-  \item CUDA DGEMM tutorial (in progress): Tensor Core kernels reach 0.82 of cuBLAS on an NVIDIA A100 (n~≥~1000). Authored the \link{https://github.com/michael-lehn/gemm-tutorial}{GEMM Tutorial} (referenced by \link{https://github.com/flame/how-to-optimize-gemm}{FLAME}); ulmBLAS is used in \link{https://www.meta.com/de/en/legal/quest/third-party-notices/14/}{Meta Quest software}.
-\end{cvitems}
-
-\cventry{{\mdseries\link{https://github.com/michael-lehn/FLENS}{FLENS}} — Flexible Library for Efficient Numerical Solutions}{C++}
-\begin{cvitems}
-  \item Built a numerical computing framework combining MATLAB-like abstractions with direct access to optimized BLAS/LAPACK kernels, achieving zero abstraction overhead as verified by benchmarks and generated assembly.
-  \item Generic architecture: algorithms run unchanged on local, distributed, GPU-resident, and implicit matrices; compile-time C++ techniques map operations to optimized kernels and detect costly temporaries.
 \end{cvitems}
 
 \cventry{{\mdseries\link{https://github.com/michael-lehn/qubic-notes}{qubic-notes}} — QubiC Compiler, ISA \& RTL Simulation}{Python · Verilog · cocotb}
