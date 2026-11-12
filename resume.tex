@@ -175,6 +175,13 @@ Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C
 % ===========================================================================
 \cvsection{SELECTED PROJECTS (OPEN SOURCE)}
 
+\cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-lam}{ulm.lam}} — Linear Algebra Compiler on MLIR (early prototype, started 2026)}{C++ · MLIR · Python · Julia}
+\begin{cvitems}
+  \item Linear algebra written as formulas in Julia or Python, with declared matrix properties (SPD, triangular, full rank), is compiled into the BLAS/LAPACK calls a numerical analyst would write: factorizations instead of inverses, each computed once; symmetric products as syrk; product order chosen by flop count, at run time if needed.
+  \item Two MLIR dialects (algebra on property-carrying tensor types; BLAS/LAPACK kernels in destination-passing style); property inference and Linnea-style kernel selection as passes; one-shot bufferization into one reused workspace; LAPACK-style info codes; EmitC lowering to C++ for ulmBLAS, Julia's BLAS, or any CBLAS/LAPACK.
+  \item Automates the formula-to-kernel mapping I did by hand for FLENS-LAPACK. First results: generalized least squares as fast as expert-written Julia, allocating KiB instead of MiB; Gaussian-process regression with n~=~100{,}000 on a 96-thread node as fast as hand-written MKL code.
+\end{cvitems}
+
 \cventry{{\mdseries\link{https://github.com/michael-lehn/ulm-on-ice}{ulm-on-iCE}} / {\mdseries\link{https://github.com/michael-lehn/ulm-generator}{ulm-generator}} — FPGA CPU \& ISA Toolchain}{SystemVerilog · C/C++ · Assembly}
 \begin{cvitems}
   \item Designed and implemented a custom RISC CPU in SystemVerilog on an iCE40 FPGA, from digital logic and ISA design to assembly programs running on physical hardware.
@@ -202,14 +209,12 @@ Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C
 \cventry{{\mdseries\link{https://github.com/michael-lehn/FLENS}{FLENS}} — Flexible Library for Efficient Numerical Solutions}{C++}
 \begin{cvitems}
   \item Built a numerical computing framework combining MATLAB-like abstractions with direct access to optimized BLAS/LAPACK kernels, achieving zero abstraction overhead as verified by benchmarks and generated assembly.
-  \item Generic architecture: algorithms run unchanged on local, distributed, GPU-resident, and implicit matrices.
-  \item Used compile-time C++ techniques to map high-level operations to optimized kernels and detect costly temporaries.
+  \item Generic architecture: algorithms run unchanged on local, distributed, GPU-resident, and implicit matrices; compile-time C++ techniques map operations to optimized kernels and detect costly temporaries.
 \end{cvitems}
 
 \cventry{{\mdseries\link{https://github.com/michael-lehn/qubic-notes}{qubic-notes}} — QubiC Compiler, ISA \& RTL Simulation}{Python · Verilog · cocotb}
 \begin{cvitems}
-  \item Studied LBNL's open-source QubiC qubit-control system; documented its compiler and ISA and built QD, a prototype quantum-control DSL compiled through QubiC-IR and the QubiC toolchain to machine code.
-  \item Explored explicit timing and synchronization semantics (parallel joins, channel placement, ordering after runtime loops); verified only in cycle-accurate RTL simulation of QubiC's cores, FPROC, and shot sequencer.
+  \item Studied LBNL's open-source QubiC qubit-control system; documented its compiler and ISA and built QD, a prototype quantum-control DSL with explicit timing and synchronization, compiled through QubiC-IR to machine code and verified in cycle-accurate RTL simulation.
 \end{cvitems}
 
 % ===========================================================================
@@ -256,7 +261,7 @@ Software engineer and mathematician (Ph.D.), 20+ years of performance-critical C
 \cventry{\link{https://tensor-solutions.com}{Tensor AI Solutions} — HPC / Tensor Networks}{2024}
 \begin{cvitems}
   \item Collaborated with Tensor AI Solutions on Tartarus, a C++ HPC library for tensor contractions in tree-tensor-network applications for machine learning and QML; co-supervised the student project and contributed substantially to its numerical algorithms and performance-oriented design.
-  \item Applied TTGT and Loops-over-GEMM contraction schemes, BLAS kernels, and Python-based C++ code generation.
+  \item Applied TTGT and Loops-over-GEMM contraction schemes, BLAS kernels, and C++ code generation in Python.
 \end{cvitems}
 
 \cventry{\link{https://www.mercedes-benz-techinnovation.com/en}{Daimler TSS} (Daimler Group) — Machine Learning / Recurrent Neural Networks}{2017 – 2018}
